@@ -4,6 +4,12 @@ on:
   pull_request:
     types: [opened, ready_for_review]  # triggers when a PR is created or marked ready
 
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+
+
 jobs:
   add-label:
     runs-on: ubuntu-latest
