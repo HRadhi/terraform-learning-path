@@ -14,8 +14,8 @@ env:
 
 
 jobs:  
-  terraform:
-    name: "Terraform Apply"
+  terraform_check:
+    name: "Terraform Check Pipeline"
     runs-on: ubuntu-latest
 
     defaults:
