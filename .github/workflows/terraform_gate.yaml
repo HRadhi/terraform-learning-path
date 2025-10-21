@@ -2,7 +2,7 @@ name: "terraform_gate"
 
 on:
   workflow_run:
-    workflows: ["terraform_check"]
+    workflows: ["terraform_plan"]
     types:
       - completed
 
