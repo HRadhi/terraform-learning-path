@@ -1,4 +1,4 @@
-name: "Terrafrom CI/CD"
+name: "Check"
 
 on:
   push:
@@ -15,7 +15,7 @@ env:
 
 jobs:  
   terraform_check:
-    name: "Terraform Check Pipeline"
+    name: "terraform_check"
     runs-on: ubuntu-latest
 
     defaults:
