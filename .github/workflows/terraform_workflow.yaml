@@ -1,13 +1,10 @@
 name: "terraform"
 
 on:
-  push:
-    branches:
-      - main
   pull_request:
     branches:
       - main
-    types: [opened, reopened, synchronize, labeled, unlabeled]
+    types: [opened, reopened, synchronize]
 
 env:
   TF_LOG: INFO
