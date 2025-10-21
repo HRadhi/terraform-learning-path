@@ -1,0 +1,92 @@
+name: "terraform_check"
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+env:
+  TF_LOG: INFO
+  TF_INPUT: False
+
+jobs:
+  terraform_check:
+    name: "terraform_check"
+    runs-on: ubuntu-latest
+    if: contains(github.event.pull_request.labels.*.name, 'merge')
+
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v3
+
+      - name: "Setup Terraform"
+        uses: hashicorp/setup-terraform@v2
+
+      - name: "Terraform Init"
+        run: terraform init
+
+      - name: "Terraform Format"
+        run: |
+          if ! terraform fmt --check --diff; then
+            echo "Terraform files are not formatted. Please run 'terraform fmt' to format them."
+            exit 1
+          fi
+
+      - name: "Terraform Validate"
+        if: (success() || failure())
+        run: terraform validate
+
+  terraform_gate:
+    name: "terraform_plan"
+    runs-on: ubuntu-latest
+    needs: terraform_check
+    if: ${{ needs.terraform_check.result == 'success' }}
+
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v3
+
+      - name: "Setup Terraform"
+        uses: hashicorp/setup-terraform@v2
+
+      - name: "Terraform Init"
+        run: terraform init
+
+      - name: "Terraform Apply"
+        run: terraform plan
+
+  terraform_gate:
+    name: "terraform_gate"
+    runs-on: ubuntu-latest
+    needs: terraform_plan
+    if: >
+      ${{ needs.terraform_plan.result == 'success' }} &&
+      contains(github.event.pull_request.labels.*.name, 'merge')
+
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v3
+
+      - name: "Setup Terraform"
+        uses: hashicorp/setup-terraform@v2
+
+      - name: "Terraform Init"
+        run: terraform init
+
+      - name: "Terraform Apply"
+        run: terraform apply -auto-approve

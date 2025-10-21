@@ -1,0 +1,16 @@
+name: no-check Label PR
+
+on:
+  pull_request:
+    types: [opened, ready_for_review]  # triggers when a PR is created or marked ready
+
+jobs:
+  add-label:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Add no-check label
+        uses: actions-ecosystem/action-add-labels@v1
+        with:
+          labels: no-check
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
