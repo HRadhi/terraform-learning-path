@@ -4,7 +4,7 @@ on:
   pull_request:
     branches:
       - main
-    types: [opened, reopened, synchronize]
+    types: [opened, reopened, synchronize, labeled, unlabeled]
 
 env:
   TF_LOG: INFO
@@ -14,6 +14,9 @@ jobs:
   terraform_check:
     name: "terraform_check"
     runs-on: ubuntu-latest
+    if: > 
+      "!contains(github.event.pull_request.labels.*.name, 'no-check')" && 
+      contains(github.event.pull_request.labels.*.name, 'check')
 
     defaults:
       run:
@@ -40,7 +43,7 @@ jobs:
         if: (success() || failure())
         run: terraform validate
 
-  terraform_plan:
+  terraform_gate:
     name: "terraform_plan"
     runs-on: ubuntu-latest
     needs: terraform_check
