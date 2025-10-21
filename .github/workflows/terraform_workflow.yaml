@@ -35,7 +35,7 @@ jobs:
       - name: "Terraform Format"
         run: |
           if ! terraform fmt --check --diff; then
-            echo "Terraform files are not formatted. Please run 'terraform fmt' to format them."
+            echo "Terraform files are not formatted. Please run 'terraform fmt' to format them !"
             exit 1
           fi
 
