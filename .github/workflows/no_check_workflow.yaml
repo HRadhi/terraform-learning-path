@@ -2,7 +2,7 @@ name: no-check Label PR
 
 on:
   pull_request:
-    types: [opened, ready_for_review]  # triggers when a PR is created or marked ready
+    types: [opened, reopened, synchronize]  # triggers when a PR is created or marked ready
 
 permissions:
   contents: read
