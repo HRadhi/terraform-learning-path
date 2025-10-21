@@ -1,4 +1,4 @@
-name: "Terrafrom CI/CD"
+name: "terraform_check"
 
 on:
   push:
@@ -14,8 +14,8 @@ env:
 
 
 jobs:  
-  terraform:
-    name: "Terraform Apply"
+  terraform_check:
+    name: "terraform_check"
     runs-on: ubuntu-latest
 
     defaults:
@@ -33,7 +33,11 @@ jobs:
         run: terraform init
 
       - name: "Terraform Format"
-        run: terraform fmt --check --diff
+        run: |
+          if ! terraform fmt --check --diff; then
+            echo "Terraform files are not formatted. Please run 'terraform fmt' to format them."
+            exit 1
+          fi
 
       - name: "Terraform Validate"
         if: (success() || failure())
