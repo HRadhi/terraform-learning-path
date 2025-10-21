@@ -1,4 +1,4 @@
-name: "Check"
+name: "terraform_check"
 
 on:
   push:
