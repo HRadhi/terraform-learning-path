@@ -1,6 +1,0 @@
-labelPRBasedOnFilePath:
-  no-check: [**/*]
-
-# Various Flags to control behaviour of the "Labeler"
-labelerFlags:
-  labelOnPRUpdates: true
